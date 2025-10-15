@@ -1,20 +1,35 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useAccount, useDisconnect, useConnections } from 'wagmi';
+import { useAccount, useDisconnect } from 'wagmi';
 import ConnectWallet from '../components/ConnectWallet';
 import Overview from './Overview';
 import VerifyPage from './VerifyPage';
 
+interface SidebarItem {
+  id: string;
+  label: string;
+  icon: React.ReactNode;
+  disabled?: boolean;
+}
+
+interface VerificationData {
+  [key: string]: any;
+}
+
 export default function Dash2() {
-  const [activeTab, setActiveTab] = useState('verify'); // Start with verify page
-  const [isVerified, setIsVerified] = useState(false);
-  const [verificationData, setVerificationData] = useState(null);
+  const [activeTab, setActiveTab] = useState<string>('verify'); // Start with verify page
+  const [isVerified, setIsVerified] = useState<boolean>(false);
+  const [verificationData, setVerificationData] = useState<VerificationData | null>(null);
+  const [isClient, setIsClient] = useState<boolean>(false);
   const { address, isConnected } = useAccount();
   const { disconnect } = useDisconnect();
-  const { connections } = useConnections();
 
-  const sidebarItems = [
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  const sidebarItems: SidebarItem[] = [
     { id: 'verify', label: 'Verify Identity', icon: (
       <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
         <path d="M12,1L3,5V11C3,16.55 6.84,21.74 12,23C17.16,21.74 21,16.55 21,11V5L12,1M10,17L6,13L7.41,11.59L10,14.17L16.59,7.59L18,9L10,17Z"/>
@@ -32,7 +47,7 @@ export default function Dash2() {
     },
   ];
 
-  const handleVerificationSuccess = (data) => {
+  const handleVerificationSuccess = (data: VerificationData) => {
     setIsVerified(true);
     setVerificationData(data);
     // Auto-redirect to balance page after successful verification
@@ -40,6 +55,14 @@ export default function Dash2() {
   };
 
   const renderContent = () => {
+    if (!isClient) {
+      return (
+        <div className="loading-state">
+          <div className="loading-spinner">Loading...</div>
+        </div>
+      );
+    }
+
     switch (activeTab) {
       case 'overview':
         if (!isVerified) {
@@ -127,12 +150,14 @@ export default function Dash2() {
               gap: '8px'
             }}
             onMouseEnter={(e) => {
-              e.target.style.backgroundColor = '#007bff';
-              e.target.style.color = 'white';
+              const target = e.target as HTMLElement;
+              target.style.backgroundColor = '#007bff';
+              target.style.color = 'white';
             }}
             onMouseLeave={(e) => {
-              e.target.style.backgroundColor = 'transparent';
-              e.target.style.color = '#007bff';
+              const target = e.target as HTMLElement;
+              target.style.backgroundColor = 'transparent';
+              target.style.color = '#007bff';
             }}
           >
             <span>←</span>
@@ -154,7 +179,9 @@ export default function Dash2() {
           </div>
           <div className="topbar-right">
             <div className="wallet-info">
-              {isConnected ? (
+              {!isClient ? (
+                <div className="wallet-loading">Loading...</div>
+              ) : isConnected ? (
                 <div className="wallet-connected">
                   <div className="wallet-address">
                     {address ? `${address.slice(0, 6)}...${address.slice(-4)}` : 'Connected'}
@@ -228,6 +255,20 @@ export default function Dash2() {
         
         .verify-button:hover {
           transform: translateY(-2px);
+        }
+        
+        .loading-state {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          height: 60vh;
+          font-size: 18px;
+          color: #666;
+        }
+        
+        .wallet-loading {
+          color: #666;
+          font-size: 14px;
         }
       `}</style>
     </div>

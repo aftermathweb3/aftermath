@@ -1,6 +1,15 @@
 'use client';
 
-export default function Overview({ verificationData, onNavigateToVerify }) {
+interface VerificationData {
+  [key: string]: any;
+}
+
+interface OverviewProps {
+  verificationData: VerificationData | null;
+  onNavigateToVerify: () => void;
+}
+
+export default function Overview({ verificationData, onNavigateToVerify }: OverviewProps) {
   return (
     <div className="overview-container">
       <div className="overview-header">

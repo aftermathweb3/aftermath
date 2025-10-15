@@ -1,6 +1,14 @@
 'use client';
 
-export default function VerifyPage({ onVerificationSuccess }) {
+interface VerificationData {
+  [key: string]: any;
+}
+
+interface VerifyPageProps {
+  onVerificationSuccess: (data: VerificationData) => void;
+}
+
+export default function VerifyPage({ onVerificationSuccess }: VerifyPageProps) {
   return (
     <div className="verify-container">
       <div className="verify-header">
