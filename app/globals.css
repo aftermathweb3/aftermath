@@ -1,33 +1,760 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import url("https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Host+Grotesk:ital,wght@0,300..800;1,300..800&display=swap");
+@import '@rainbow-me/rainbowkit/styles.css';
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+/* Custom Rainbow Kit Styling to match app design */
+[data-rk] {
+  --rk-fonts-body: 'Host Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --rk-fonts-heading: 'Host Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --rk-colors-accentColor: #241910;
+  --rk-colors-accentColorForeground: #fefbf4;
+  --rk-colors-actionButtonBorder: #241910;
+  --rk-colors-actionButtonBorderMobile: #241910;
+  --rk-colors-actionButtonSecondaryBackground: transparent;
+  --rk-colors-closeButton: #241910;
+  --rk-colors-closeButtonBackground: transparent;
+  --rk-colors-connectButtonBackground: #241910;
+  --rk-colors-connectButtonBackgroundError: #dc2626;
+  --rk-colors-connectButtonInnerBackground: #241910;
+  --rk-colors-connectButtonText: #fefbf4;
+  --rk-colors-connectionIndicator: #10b981;
+  --rk-colors-error: #dc2626;
+  --rk-colors-generalBorder: #e5e7eb;
+  --rk-colors-generalBorderDim: #f3f4f6;
+  --rk-colors-menuBackground: #fefbf4;
+  --rk-colors-menuBackgroundSecondary: #f9fafb;
+  --rk-colors-menuBorder: #e5e7eb;
+  --rk-colors-modalBackdrop: rgba(0, 0, 0, 0.5);
+  --rk-colors-modalBackground: #fefbf4;
+  --rk-colors-modalBorder: #e5e7eb;
+  --rk-colors-modalText: #241910;
+  --rk-colors-modalTextDim: #6b7280;
+  --rk-colors-modalTextSecondary: #374151;
+  --rk-colors-profileAction: #f3f4f6;
+  --rk-colors-profileActionHover: #e5e7eb;
+  --rk-colors-profileForeground: #241910;
+  --rk-colors-selectedOptionBorder: #241910;
+  --rk-colors-standby: #f59e0b;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
+/* Override Rainbow Kit button styles to match our design */
+[data-rk] button[data-testid="rk-connect-button"] {
+  background-color: var(--bg) !important;
+  color: var(--fg) !important;
+  border: 1px solid var(--fg) !important;
+  border-radius: 0.375rem !important;
+  padding: 0.75rem 1.5rem !important;
+  font-family: 'Host Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+  font-weight: 500 !important;
+  font-size: 0.875rem !important;
+  transition: all 0.2s ease !important;
+  cursor: pointer !important;
+  min-height: 44px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+[data-rk] button[data-testid="rk-connect-button"]:hover {
+  background-color: var(--fg) !important;
+  color: var(--bg) !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 4px 12px rgba(36, 25, 16, 0.15) !important;
+}
+
+[data-rk] button[data-testid="rk-connect-button"]:focus {
+  outline: 2px solid var(--fg) !important;
+  outline-offset: 2px !important;
+}
+
+/* Style the account button when connected */
+[data-rk] button[data-testid="rk-account-button"] {
+  background-color: var(--bg) !important;
+  color: var(--fg) !important;
+  border: 1px solid var(--fg) !important;
+  border-radius: 0.375rem !important;
+  padding: 0.5rem 1rem !important;
+  font-family: 'Host Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+  font-weight: 500 !important;
+  font-size: 0.875rem !important;
+  transition: all 0.2s ease !important;
+  min-height: 40px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+[data-rk] button[data-testid="rk-account-button"]:hover {
+  background-color: var(--fg) !important;
+  color: var(--bg) !important;
+  box-shadow: 0 4px 12px rgba(36, 25, 16, 0.15) !important;
+}
+
+/* Style the modal */
+[data-rk] [role="dialog"] {
+  background-color: var(--bg) !important;
+  border: 1px solid var(--fg) !important;
+  border-radius: 0.5rem !important;
+  font-family: 'Host Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+}
+
+/* Style wallet options in modal */
+[data-rk] [data-testid="rk-wallet-option"] {
+  border: 1px solid #e5e7eb !important;
+  border-radius: 0.375rem !important;
+  transition: all 0.2s ease !important;
+}
+
+[data-rk] [data-testid="rk-wallet-option"]:hover {
+  border-color: var(--fg) !important;
+  background-color: #f9fafb !important;
+}
+
+/* Style the chain selector */
+[data-rk] [data-testid="rk-chain-button"] {
+  background-color: var(--bg) !important;
+  color: var(--fg) !important;
+  border: 1px solid var(--fg) !important;
+  border-radius: 0.25rem !important;
+  font-family: 'Host Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+}
+
+/* Wallet connect area styling */
+.wallet-connect-area {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+  border: 2px dashed #e5e7eb;
+  border-radius: 0.5rem;
+  background-color: #f9fafb;
+
+}
+
+/* Ensure wallet connect area doesn't interfere with button styling */
+.wallet-connect-area .connect-wallet-btn {
+  background: none !important;
+  border: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  
+}
+
+.wallet-connected {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.wallet-address {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.875rem;
+  color: var(--fg);
+  background-color: #f3f4f6;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+}
+
+.no-wallet-connected {
+  text-align: center;
+  padding: 2rem;
+  color: #6b7280;
+  font-style: italic;
+}
+
+.disconnect-btn {
+  background-color: transparent;
+  border: 1px solid #dc2626;
+  color: #dc2626;
+  border-radius: 0.375rem;
+  padding: 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+}
+
+.disconnect-btn:hover {
+  background-color: #dc2626;
+  color: white;
+  transform: translateY(-1px);
+}
+
+.disconnect-btn svg {
+  flex-shrink: 0;
+}
+
+/* Add Wallet Button */
+.add-wallet-btn {
+  background-color: var(--bg);
+  color: var(--fg);
+  border: 1px solid var(--fg);
+  border-radius: 0.375rem;
+  padding: 0.75rem 1.5rem;
+  font-family: 'Host Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-weight: 500;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+.add-wallet-btn:hover {
+  background-color: var(--fg);
+  color: var(--bg);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(36, 25, 16, 0.15);
+}
+
+/* Wallet Selection Modal */
+.wallet-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.wallet-modal {
+  background-color: var(--bg);
+  border: 1px solid var(--fg);
+  border-radius: 0.75rem;
+  max-width: 500px;
+  width: 90%;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+.wallet-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem;
+  border-bottom: 1px solid rgba(36, 25, 16, 0.1);
+}
+
+.wallet-modal-header h3 {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--fg);
+}
+
+.close-modal-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 0.25rem;
+  color: var(--fg);
+  transition: background-color 0.2s ease;
+}
+
+.close-modal-btn:hover {
+  background-color: rgba(36, 25, 16, 0.1);
+}
+
+.wallet-modal-content {
+  padding: 1.5rem;
+}
+
+.wallet-modal-content p {
+  margin: 0 0 1.5rem 0;
+  color: var(--fg);
+  opacity: 0.7;
+}
+
+.wallet-options-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.wallet-option {
+  background-color: transparent;
+  border: 1px solid rgba(36, 25, 16, 0.2);
+  border-radius: 0.5rem;
+  padding: 1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  text-align: left;
+}
+
+.wallet-option:hover {
+  border-color: var(--fg);
+  background-color: rgba(36, 25, 16, 0.05);
+  transform: translateY(-1px);
+}
+
+.wallet-option .wallet-icon {
+  flex-shrink: 0;
+  color: var(--fg);
+}
+
+.wallet-option .wallet-info h4 {
+  margin: 0 0 0.25rem 0;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--fg);
+}
+
+.wallet-option .wallet-info p {
+  margin: 0;
+  font-size: 0.75rem;
+  color: var(--fg);
+  opacity: 0.6;
+}
+
+/* All Assets Summary */
+.all-assets-summary {
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 1px solid rgba(36, 25, 16, 0.1);
+}
+
+.all-assets-summary h2 {
+  margin: 0 0 1.5rem 0;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--fg);
+}
+
+.assets-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.summary-card {
+  background-color: rgba(36, 25, 16, 0.05);
+  border: 1px solid rgba(36, 25, 16, 0.1);
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.summary-icon {
+  font-size: 2rem;
+  flex-shrink: 0;
+}
+
+.summary-content h3 {
+  margin: 0 0 0.5rem 0;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--fg);
+  opacity: 0.7;
+}
+
+.summary-value {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--fg);
+  margin: 0 0 0.25rem 0;
+}
+
+.summary-label {
+  font-size: 0.75rem;
+  color: var(--fg);
+  opacity: 0.6;
+  margin: 0;
+}
+
+/* Wallet detection states */
+.wallet-option:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.already-connected {
+  display: inline-block;
+  background-color: #10b981;
+  color: white;
+  padding: 0.125rem 0.5rem;
+  border-radius: 0.25rem;
+  font-size: 0.625rem;
+  font-weight: 500;
+  margin-top: 0.25rem;
+}
+
+:root {
+  --fg: #241910;
+  --bg: #fefbf4;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+}
+
+html::-webkit-scrollbar {
+  display: none; /* WebKit */
 }
 
 body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+  font-family: "DM Mono", monospace;
 }
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
+img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+h1 {
+  font-family: "Host Grotesk";
+  font-size: 6rem;
+  font-weight: 400;
+  line-height: 1.1;
+}
+
+p {
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+a {
+  text-decoration: none;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--fg);
+}
+
+.btn {
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.25rem;
+}
+
+.btn.primary {
+  background-color: var(--bg);
+}
+
+.btn.primary a {
+  color: var(--fg);
+}
+
+.btn.secondary {
+  background-color: var(--fg);
+}
+
+.btn.secondary a {
+  color: var(--bg);
+}
+
+nav {
+  position: fixed;
+  width: 100vw;
+  padding: 1.5rem 2rem;
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  will-change: opacity;
+  z-index: 2;
+  opacity: 0;
+  transition: opacity 1s ease-in-out;
+}
+
+nav.fade-in {
+  opacity: 1;
+}
+
+nav > div {
+  flex: 1;
+}
+
+nav .nav-links {
+  display: flex;
+  gap: 3rem;
+}
+
+nav .logo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+nav .logo img {
+  width: 2rem;
+}
+
+nav .logo a {
+  text-transform: none;
+  font-family: "Host Grotesk";
+  font-size: 1.5rem;
+}
+
+nav .nav-buttons {
+  display: flex;
+  gap: 1.5rem;
+  justify-content: flex-end;
+}
+
+section {
+  position: relative;
+  width: 100vw;
+  height: 100svh;
+  overflow: hidden;
+}
+
+.outro {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 2rem;
+  background-color: var(--bg);
+  color: var(--fg);
+}
+
+.outro h1 {
+  max-width: 65%;
+  margin: 0 auto;
+}
+
+.outro-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 2rem;
+  align-items: center;
+}
+
+.outro .btn {
+  padding: 1rem 2rem;
+  border-radius: 0.5rem;
+  transition: all 0.3s ease;
+}
+
+.outro .btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.outro .btn.primary {
+  background-color: var(--fg);
+  border: 2px solid var(--fg);
+}
+
+.outro .btn.primary a {
+  color: var(--bg);
+  font-weight: 600;
+}
+
+.outro .btn.secondary {
+  background-color: transparent;
+  border: 2px solid var(--fg);
+}
+
+.outro .btn.secondary a {
+  color: var(--fg);
+  font-weight: 600;
+}
+
+canvas {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 1s ease-in-out;
+}
+
+canvas.fade-in {
+  opacity: 1;
+}
+
+.hero-content {
+  position: absolute;
+  top: 25%;
+  left: 50%;
+  transform: translateX(-50%);
+  transform-style: preserve-3d;
+  perspective: 1000px;
+  padding: 0.5rem 0;
+}
+
+.header {
+  position: absolute !important;
+  top: 150px;
+  left: 50%;
+  transform: translate(-50%, -50%) !important;
+  width: 100vw;
+  max-width: 60vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+  text-align: center;
+  color: var(--fg);
+  transform-origin: center;
+  will-change: transform, opacity;
+  opacity: 0;
+  transition: opacity 1s ease-in-out;
+}
+
+.header.fade-in {
+  opacity: 1;
+}
+
+.header h1 {
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+.header p {
+  opacity: 0.6;
+  font-size: 1rem;
+}
+
+.client-logos {
+  width: 30%;
+  display: flex;
+  gap: 0.5rem;
+}
+
+.client-logos .client-logo {
+  flex: 1;
+}
+
+.client-logos .client-logo img {
+  object-fit: contain;
+}
+
+.hero-img-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 50%;
+  transform-style: preserve-3d;
+  perspective: 1000px;
+}
+
+.hero-img {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform: translateZ(1000px);
+  opacity: 0;
+  will-change: transform, opacity;
+}
+
+@media (max-width: 1000px) {
+  h1 {
+    font-size: 4rem;
   }
+
+  nav .nav-links,
+  nav .nav-buttons {
+    display: none;
+  }
+
+  .header h1,
+  .client-logos,
+  .hero-img-container {
+    width: calc(100% - 4rem);
+  }
+  
+  .header h1 {
+    width: 100%;
+  }
+  
+  .header {
+    max-width: 80vw;
+  }
+  
+  .outro-buttons {
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+  }
+  
+  .outro .btn {
+    width: 200px;
+    text-align: center;
+  }
+}
+
+/* Dashboard Styles */
+.dashboard-container {
+  display: flex;
+  min-height: 100vh;
+  background-color: var(--bg);
+  color: var(--fg);
+}
+
+.dashboard-sidebar {
+  width: 250px;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(30px);
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 1.5rem 0;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  position: relative;
+  z-index: 1;
+  flex-shrink: 0;
+  box-shadow: 4px 0 30px rgba(0, 0, 0, 0.1);
+  opacity: 1;
+  border-radius: 0 20px 20px 0;
+}
+
+.sidebar-header {
+  padding: 0 2rem 2rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  margin-bottom: 2rem;
+}
+
+.sidebar-title {
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+
+.sidebar-title:hover {
+  opacity: 0.8;
+}
+
+.sidebar-title h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 0;
+  color: var(--fg);
+}
+
+.sidebar-title p {
+  font-size: 0.875rem;
+  opacity: 0.7;
+  margin: 0.25rem 0 0;
 }
