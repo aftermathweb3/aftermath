@@ -540,7 +540,7 @@ export default function Home() {
                 {/* Claim Inheritance Option */}
                 <div 
                   className="option-card claim-inheritance"
-                  onClick={() => window.location.href = '/dashboard2'}
+                  onClick={() => window.location.href = '/dash_benef'}
                   style={{
                     border: '2px solid #e0e0e0',
                     borderRadius: '16px',
