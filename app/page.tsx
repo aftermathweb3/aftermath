@@ -5,17 +5,20 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import Lenis from "lenis";
+import { ConnectButton } from '@rainbow-me/rainbowkit';
+import { useAccount } from 'wagmi';
+
 
 export default function Home() {
   const containerRef = useRef(null);
-  const canvasRef = useRef(null);
-  const navRef = useRef(null);
-  const headerRef = useRef(null);
-  const heroImgRef = useRef(null);
-  const contextRef = useRef(null);
-  const imagesRef = useRef([]);
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const navRef = useRef<HTMLElement | null>(null);
+  const headerRef = useRef<HTMLDivElement | null>(null);
+  const heroImgRef = useRef<HTMLDivElement | null>(null);
+  const contextRef = useRef<CanvasRenderingContext2D | null>(null);
+  const imagesRef = useRef<HTMLImageElement[]>([]);
   const videoFramesRef = useRef({ frame: 0 });
-  const lenisRef = useRef(null);
+  const lenisRef = useRef<Lenis | null>(null);
   const scrollTriggerCreatedRef = useRef(false);
   
   // Portal modal state
@@ -44,10 +47,15 @@ export default function Home() {
   useGSAP(
     () => {
       const canvas = canvasRef.current;
+      if (!canvas) return;
+      
       const context = canvas.getContext("2d");
+      if (!context) return;
+      
       contextRef.current = context;
 
       const setCanvasSize = () => {
+        if (!canvas || !context) return;
         const pixelRatio = window.devicePixelRatio || 1;
         canvas.width = window.innerWidth * pixelRatio;
         canvas.height = window.innerHeight * pixelRatio;
@@ -59,7 +67,7 @@ export default function Home() {
       setCanvasSize();
 
       const frameCount = 207;
-      const currentFrame = (index) =>
+      const currentFrame = (index: number) =>
         `/frames/frame_${(index + 1).toString().padStart(4, "0")}.jpg`;
 
       let images = [];
@@ -130,6 +138,8 @@ export default function Home() {
       setTimeout(initialRender, 100);
 
       const render = () => {
+        if (!context) return;
+        
         const canvasWidth = window.innerWidth;
         const canvasHeight = window.innerHeight;
 
@@ -376,8 +386,14 @@ export default function Home() {
                 justifyContent: 'center',
                 transition: 'background-color 0.2s ease'
               }}
-              onMouseEnter={(e) => e.target.style.backgroundColor = '#f0f0f0'}
-              onMouseLeave={(e) => e.target.style.backgroundColor = 'transparent'}
+              onMouseEnter={(e) => {
+                const target = e.target as HTMLElement;
+                target.style.backgroundColor = '#f0f0f0';
+              }}
+              onMouseLeave={(e) => {
+                const target = e.target as HTMLElement;
+                target.style.backgroundColor = 'transparent';
+              }}
             >
               ×
             </button>
@@ -451,14 +467,16 @@ export default function Home() {
                     overflow: 'hidden'
                   }}
                   onMouseEnter={(e) => {
-                    e.target.style.borderColor = '#667eea';
-                    e.target.style.transform = 'translateY(-4px)';
-                    e.target.style.boxShadow = '0 12px 30px rgba(102, 126, 234, 0.15)';
+                    const target = e.target as HTMLElement;
+                    target.style.borderColor = '#667eea';
+                    target.style.transform = 'translateY(-4px)';
+                    target.style.boxShadow = '0 12px 30px rgba(102, 126, 234, 0.15)';
                   }}
                   onMouseLeave={(e) => {
-                    e.target.style.borderColor = '#e0e0e0';
-                    e.target.style.transform = 'translateY(0)';
-                    e.target.style.boxShadow = 'none';
+                    const target = e.target as HTMLElement;
+                    target.style.borderColor = '#e0e0e0';
+                    target.style.transform = 'translateY(0)';
+                    target.style.boxShadow = 'none';
                   }}
                 >
                   <div className="option-icon" style={{
@@ -534,14 +552,16 @@ export default function Home() {
                     overflow: 'hidden'
                   }}
                   onMouseEnter={(e) => {
-                    e.target.style.borderColor = '#764ba2';
-                    e.target.style.transform = 'translateY(-4px)';
-                    e.target.style.boxShadow = '0 12px 30px rgba(118, 75, 162, 0.15)';
+                    const target = e.target as HTMLElement;
+                    target.style.borderColor = '#764ba2';
+                    target.style.transform = 'translateY(-4px)';
+                    target.style.boxShadow = '0 12px 30px rgba(118, 75, 162, 0.15)';
                   }}
                   onMouseLeave={(e) => {
-                    e.target.style.borderColor = '#e0e0e0';
-                    e.target.style.transform = 'translateY(0)';
-                    e.target.style.boxShadow = 'none';
+                    const target = e.target as HTMLElement;
+                    target.style.borderColor = '#e0e0e0';
+                    target.style.transform = 'translateY(0)';
+                    target.style.boxShadow = 'none';
                   }}
                 >
                   <div className="option-icon" style={{
